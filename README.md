@@ -63,7 +63,7 @@
 
 ### Предварительные требования
 
-- **Python**: Версия 3.8 или выше. [Скачать Python](https://www.python.org/downloads/)
+- **Python**: Версия 3.10 или выше. [Скачать Python](https://www.python.org/downloads/)
 - **Git**: Для клонирования репозитория. [Скачать Git](https://git-scm.com/downloads)
 
 ### Шаги установки
@@ -118,13 +118,6 @@
 python server.py
 ```
 
-**Пример запуска:**
-
-```bash
-python server.py --config config.yaml
-```
-
-*Опционально: вы можете передать путь к конфигурационному файлу через аргументы командной строки.*
 
 ### Отправка данных на сервер
 
@@ -143,55 +136,6 @@ python server.py --config config.yaml
 ```
 192.168.1.10\t2024.04.27 14:23:55.123456\t230.5
 ```
-
-### Генерация графиков
-
-Проект включает функциональность для генерации графиков на основе хранимых данных мощности. Графики обновляются в реальном времени и сохраняются в директории `plots/`.
-
-**Запуск генерации графиков:**
-
-```bash
-python plot_generator.py
-```
-
-*Убедитесь, что сервер запущен и собирает данные перед запуском генератора графиков.*
-
----
-
-## Структура проекта
-
-```
-socket-server-with-plot-generator/
-│
-├── core/
-│   ├── storage.py
-│   ├── logger.py
-│   ├── meter.py
-│   └── meter_storage.py
-│
-├── server/
-│   ├── server.py
-│   └── client_handler.py
-│
-├── plots/
-│   └── (сгенерированные графики)
-│
-├── tests/
-│   ├── test_storage.py
-│   ├── test_logger.py
-│   └── test_server.py
-│
-├── docs/
-│   └── architecture.png
-│
-├── requirements.txt
-├── config.yaml
-├── plot_generator.py
-├── README.md
-└── LICENSE
-```
-
----
 
 ## Компоненты
 
@@ -264,58 +208,37 @@ meter_storage.add_meter(Meter(ip="192.168.1.10", unit="V", range_start=0.0, rang
 - `handle_client(client_socket, address, storage)`: Обрабатывает соединение с клиентом.
 - `run_server(host, port, storage)`: Запускает сервер и слушает входящие подключения.
 
+## Конфигурация
+
+### Файл `ip_mapping.txt`
+
+Перед запуском сервера необходимо создать файл `ip_mapping.txt` в корневой директории проекта. Этот файл содержит информацию о метрах и должен иметь следующую структуру:
+
+IP_ADDRESS\tMIN_VALUE\tMAX_VALUE\tUNIT
+
+
+**Пример содержимого `ip_mapping.txt`:**
+```txt
+10.0.0.1	0	110	В
+10.0.0.2	0	0.5	А
+10.0.0.3	0.2	1	А
+10.0.0.4	1	5	А
+10.0.0.5	3	10	А
+```
+## Запуск проекта
+
 **Пример запуска сервера:**
 
-```python
-from server.server import run_server
-from core.storage import Storage
-from core.meter_storage import MeterStorage
-
-meter_storage = MeterStorage()
-storage = Storage(log_name="power.log", meter_storage=meter_storage)
-
-run_server(host="0.0.0.0", port=8000, storage=storage)
+```
+python main.py
 ```
 
 ---
 
-## Тестирование
+**Пример запуска клиента:**
 
-Для обеспечения качества и надежности проекта предусмотрены тесты, расположенные в директории `tests/`. Тесты написаны с использованием фреймворка `unittest`.
-
-**Запуск тестов:**
-
-```bash
-python -m unittest discover -s tests
 ```
-
----
-
-## Вклад в проект
-
-Мы рады любым предложениям и вкладам в развитие проекта. Если вы хотите внести свой вклад, пожалуйста, следуйте следующим шагам:
-
-1. **Форк репозитория**: Создайте копию репозитория на вашем GitHub аккаунте.
-2. **Создайте ветку для изменений**:
-
-    ```bash
-    git checkout -b feature/your-feature-name
-    ```
-
-3. **Внесите изменения и закоммитьте их**:
-
-    ```bash
-    git commit -m "Добавляет новую функциональность"
-    ```
-
-4. **Отправьте ветку в ваш форк**:
-
-    ```bash
-    git push origin feature/your-feature-name
-    ```
-
-5. **Создайте Pull Request**: Перейдите в оригинальный репозиторий и создайте Pull Request из вашей ветки.
-
-**Пожалуйста, убедитесь, что ваши изменения соответствуют кодстайлу проекта и покрыты тестами.**
+python client.py
+```
 
 ---
