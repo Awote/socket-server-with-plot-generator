@@ -1,5 +1,4 @@
 # Byte-compiled / optimized / DLL files
-__pycache__/
 *.py[cod]
 *$py.class
 
@@ -120,7 +119,6 @@ ipython_config.py
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
 __pypackages__/
 
-*/__pycache__
 # Celery stuff
 celerybeat-schedule
 celerybeat.pid
@@ -172,7 +170,7 @@ cython_debug/
 .pypirc
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+__pycache__
 *.py[cod]
 *$py.class
 
@@ -342,3 +340,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+*/__pycache__/*
